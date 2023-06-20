@@ -1,6 +1,5 @@
 package io.helidon.example.idcs;
 
-import io.helidon.microprofile.server.Server;
 import io.helidon.security.SecurityContext;
 import io.helidon.security.annotations.Authenticated;
 import jakarta.annotation.security.RolesAllowed;
@@ -39,8 +38,9 @@ public class HelidonResource {
     public JsonObject getDefaultMessage(@Context SecurityContext secCtx) {
         var user = secCtx.userName();
         var isInRole = secCtx.isUserInRole("secret_role");
-        var bearerToken = jwt.getRawToken();
+        var bearerToken = jwt.getRawToken(); // Manually access raw bearer token
 
+        // Bearer token is propagated automatically no manual action is needed with JAX-RS client
         JsonObject response = ClientBuilder.newClient()
                 .target(wlsServiceUri)
                 .request()
@@ -52,9 +52,5 @@ public class HelidonResource {
                 .add("is_secret_role", isInRole)
                 .add("wls-response", response)
                 .build();
-    }
-
-    public static void main(String[] args) {
-        Server.create().start();
     }
 }
