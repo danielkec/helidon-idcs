@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>io.helidon.example.idcs</groupId>
+    <artifactId>helidon-idcs-example</artifactId>
+    <version>1.0-SNAPSHOT</version>
+    <name>Helidon IDCS forwarding token example</name>
+    <packaging>pom</packaging>
+
+    <modules>
+        <module>helidon-service</module>
+        <module>wls-mock-service</module>
+    </modules>
+</project>

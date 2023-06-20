@@ -1,0 +1,30 @@
+server:
+  port: 8082
+  host: 0.0.0.0
+
+idcs:
+  url: ${IDCS_URI}:443
+  client-id: "b2851e880a384faa867d973e2479663f"
+  client-secret: "${IDCS_TEST_SECRET}"
+
+mp.jwt.verify:
+  issuer: "https://identity.oraclecloud.com/"
+  publickey:
+    # Load public key from Keycloak
+    location: ${idcs.url}/admin/v1/SigningCert/jwk
+
+security:
+  providers:
+    - oidc:
+        server-type: "idcs"
+        client-id: ${idcs.client-id}
+        client-secret: ${idcs.client-secret}
+        identity-uri: ${idcs.url}
+        frontend-uri: "http://localhost:${server.port}"
+
+    - idcs-role-mapper:
+        multitenant: false
+        oidc-config:
+          client-id: ${idcs.client-id}
+          client-secret: ${idcs.client-secret}
+          identity-uri: ${idcs.url}

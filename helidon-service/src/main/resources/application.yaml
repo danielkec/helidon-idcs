@@ -1,0 +1,36 @@
+server:
+  port: 8080
+  host: 0.0.0.0
+
+idcs:
+  url: ${IDCS_URI}:443
+  client-id: "b2851e880a384faa867d973e2479663f"
+  client-secret: "${IDCS_TEST_SECRET}"
+
+wls:
+  service:
+    url: http://localhost:8082/wls-service
+
+security:
+  providers:
+    - abac:
+    - oidc:
+        server-type: "idcs"
+        client-id: ${idcs.client-id}
+        client-secret: ${idcs.client-secret}
+        redirect: true
+        identity-uri: ${idcs.url}
+        frontend-uri: "http://localhost:${server.port}"
+        logout-enabled: true
+        post-logout-uri: /
+        propagate: true
+        outbound:
+          - name: "propagate-token"
+            hosts: [ "localhost" ]
+
+    - idcs-role-mapper:
+        multitenant: false
+        oidc-config:
+          client-id: ${idcs.client-id}
+          client-secret: ${idcs.client-secret}
+          identity-uri: ${idcs.url}
